@@ -1,0 +1,19 @@
+module RiverSensor{	
+
+	struct Reading{
+		long time; //the timestamp this reading was created
+		long date; //the datestamp
+		long level1; //the recorded level of the first sensor
+		long level2; //the recorded level of the second sensor
+		string sensorName; //the name of the sensor that created this reading
+	};
+	
+	interface Sensor {
+		readonly attribute string name; //this sensor's name
+		readonly attribute string zone; //the LMC this sensor will connect to
+		attribute Reading current; //the current (last recorded) reading of this sensor
+		Reading currentReading();
+		attribute boolean power1; //power status of sensors 1 and 2
+		attribute boolean power2;
+	};
+};

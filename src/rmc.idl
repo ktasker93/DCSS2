@@ -1,0 +1,21 @@
+#include "lmc.idl"
+	
+module RMCentre{
+	
+	 typedef sequence<string> NotificationList; //list of users
+	 typedef sequence<LMCentre::Alarm> AllAlarmList; //list of alarms
+	 
+	 struct AlarmData{ //modified Alarm struct to send to RMCClients
+	 	LMCentre::Alarm aReading; //stores an alarm to be sent
+	 	string aConfirmingSensor; //stores the name of the sensor that initially triggered the alarm
+	 };
+	 
+	 interface RMC {
+	 	void raiseAlarm(in AlarmData anAlarm); //called by LMS to store an alarm in RMC
+	 	void registerAgency(in string who, in string contact_details, in string zone); //register an agency from RMCClient to show alarms to
+	 	void registerUser(in string who, in string contact_details, in string zone); //register a user from RMCClient to show the latest alarm to
+	 	LMCentre::Alarm currentAlarm(in string district, in string who); //return the latest alarm in a zone (LMC zone)
+	 	AllAlarmList allCurrentAlarms(in string district, in string who); //return a log of all alarms in a zone (LMC zone)
+	 	boolean checkUser(in string userID); //check if a user is an agency/police etc or just a member of public
+	 };
+};

@@ -1,0 +1,27 @@
+#include "sensor.idl"
+
+module LMCentre{
+	
+	 struct Alarm{
+		long time; //the timestamp of the reading which triggered an alarm
+		long date; //the datestamp of the reading
+		string sensor; //the name of the sensor which generated the reading
+		string zone; //the zone (LMC) this sensor/alarm was generated in
+		long level1; //the reading's first level
+		long level2; //the reading's second level
+		boolean isResolved; //whether the RMC has 'resolved' this alarm yet (read: sent notifications to RMCClients)
+		long alarmID; //the ArrayList index of this alarm (to retrieve and modify isResolved at a later time)
+	 };
+	
+	 typedef sequence<Alarm> Log; //defines an array to return in the interface below
+	 typedef long logCount;
+     typedef sequence<string> ConnectedSensors; //defines an array to return in the interface below
+
+	 interface LMS{
+	 	readonly attribute string name; //the name of this LMS
+		attribute Log theLog; //the log of alarms it will store
+		attribute ConnectedSensors linkedSensors; //the log of linked sensors it will store
+	 	void raise_Alarm(in Alarm aReading); //raise an alarm to send to the RMS and store locally
+	 	void add_Sensor(in RiverSensor::Sensor aSensor); //add a sensor to store locally
+	 }; 	
+};
